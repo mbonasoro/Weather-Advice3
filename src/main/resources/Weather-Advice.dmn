@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_0CEF7EE4-D9E1-4998-A334-D97977479744" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_E545BC26-12BB-4DB5-A03A-6F1BD276681C" name="MyName-Weather-Advice" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_0CEF7EE4-D9E1-4998-A334-D97977479744">
+  <dmn:extensionElements/>
+  <dmn:itemDefinition id="_D85E22FE-F646-4DC3-8FD8-73D25D4201D5" name="temperature" isCollection="false">
+    <dmn:typeRef>string</dmn:typeRef>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_EB6B0323-0AE7-48B0-8F52-DC0D4A312C7D">
+      <dmn:text>"cold", "warm", "hot"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_CE1927BF-AE25-4B03-BB16-4576BB94CCCF" name="weather" isCollection="false">
+    <dmn:itemComponent id="_DD0B8FA5-01F2-4BBA-BC0B-F8AE3917FD6B" name="temperature" isCollection="false">
+      <dmn:typeRef>temperature</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7E147E8F-9BFF-4D2D-9FE2-ECBA1186E1D9" name="rainForecast" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FFC20763-A81A-4E97-A95F-F80BEF7F95FF" name="stormAlert" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BC629EBB-04A4-4CE7-BE5E-543AFDBBCA13" name="location" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:inputData id="_639EBF67-BD58-4D92-99A7-F2D52BA73E5A" name="Name">
+    <dmn:extensionElements/>
+    <dmn:variable id="_5D02A636-AC54-4E37-89D9-43D8150DA8C5" name="Name" typeRef="string"/>
+  </dmn:inputData>
+  <dmn:decision id="_E2CD3347-C869-45C3-94C6-E31AEE538133" name="Daily-Advice">
+    <dmn:extensionElements/>
+    <dmn:variable id="_7A192E89-CC5F-4644-BA3C-243034F18923" name="Daily-Advice" typeRef="string"/>
+    <dmn:informationRequirement id="_66AC1350-178F-4B7C-BCAB-3975EDA3435D">
+      <dmn:requiredInput href="#_639EBF67-BD58-4D92-99A7-F2D52BA73E5A"/>
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_1BEA8841-4216-40DA-A6D4-35BB6645D32E">
+      <dmn:requiredDecision href="#_820B2767-C806-4EBB-9DE3-047D8035221C"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_2A9DBBF2-A44F-45F9-9CAB-A753124AE288">
+      <dmn:text>if Name = "" then "Sorry, we don't have enough information to provide a response." else "Hello "+Name+"! " + Weather-Advice</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_87CB9F86-8205-48E5-A578-AD0CF21BDDF0" name="Weather">
+    <dmn:extensionElements/>
+    <dmn:variable id="_FD5FB03B-AA93-42E2-B095-E46D7533BDE0" name="Weather" typeRef="weather"/>
+  </dmn:inputData>
+  <dmn:decision id="_820B2767-C806-4EBB-9DE3-047D8035221C" name="Weather-Advice">
+    <dmn:extensionElements/>
+    <dmn:variable id="_201DB9A1-3DFD-4FA1-9932-374B1FDC26C7" name="Weather-Advice" typeRef="string"/>
+    <dmn:informationRequirement id="_49F2A469-DC12-4B37-B1E6-0BC16A67F978">
+      <dmn:requiredInput href="#_87CB9F86-8205-48E5-A578-AD0CF21BDDF0"/>
+    </dmn:informationRequirement>
+    <dmn:decisionTable id="_955B318E-769F-4C1C-B4D5-72DCD547B20A" hitPolicy="FIRST" preferredOrientation="Rule-as-Row">
+      <dmn:input id="_DCB41E2C-6E0B-4E28-B1E5-09BFAFCF1229">
+        <dmn:inputExpression id="_F820AC47-BF1E-4C0B-B6BC-2C91ED194F82" typeRef="number">
+          <dmn:text>Weather.rainForecast</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input id="_320FDF88-2333-4AE8-B70F-78A91840E0E4">
+        <dmn:inputExpression id="_F7CB5E70-F7F6-4106-A53A-BE41D26F7F4A" typeRef="temperature">
+          <dmn:text>Weather.temperature</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input id="_08ECD752-D638-41A4-864F-0F6EF46CF724">
+        <dmn:inputExpression id="_13489640-F131-44AD-90A6-A2E11B818B3E" typeRef="boolean">
+          <dmn:text>Weather.stormAlert</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output id="_98C438C8-A588-4FFC-9A0F-1A7F0C4FF63B"/>
+      <dmn:annotation name="annotation-1"/>
+      <dmn:rule id="_BCB2048D-2C93-4A05-A41D-52F7B27C38BF">
+        <dmn:inputEntry id="_BB8BADEA-F2FE-4555-B21F-BFE5D7E8AA9F">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_75B4E46C-63B5-4FFB-B6FD-F3DB455BB5DB">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_13B90E06-20BA-45FD-BD44-B7D380F9A057">
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_89B8B394-FD42-4F69-8365-2AA20D131FBD">
+          <dmn:text>"Stay home! There is a storm alert."</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_29E21D89-0097-4381-BA51-92EF07504817">
+        <dmn:inputEntry id="_F1242235-AE5D-4614-8A1C-822E298AC905">
+          <dmn:text>[0..20)</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_A0C792FF-4BC4-4CB5-BB1D-B6204374B940">
+          <dmn:text>"cold"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_0B99E696-9136-44DD-92D0-05B01D5A06DF">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_A9C8B71F-3E87-4D6A-80E2-AB65675260CB">
+          <dmn:text>"Cold day. Take a coat."</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_396DA171-6536-42E6-ACEF-FA612F48FAA6">
+        <dmn:inputEntry id="_7C86EF0C-284F-4867-909B-9DA3B4D2690C">
+          <dmn:text>[20..80)</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_4EBB0DFD-B894-4CB6-B533-AC922B4B2DE1">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_51393DC7-105F-4989-8919-212907F95BCE">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_5D1410CC-9629-449E-9A54-5DC85B88C619">
+          <dmn:text>"Risk of rain. Might need an umbrella."</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_5072E68C-58F8-4340-A213-06D3A38C3D4E">
+        <dmn:inputEntry id="_FF8F00D5-BC29-4E33-98DD-662A13F95A3A">
+          <dmn:text>[80..100)</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_3F0BC9EB-C1E6-4389-B60E-A2F11960EDA6">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry id="_11DB996F-868E-4DFB-ADBA-8DDFDBE76996">
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_ABA58F69-8223-4B35-9E28-4428264832B0">
+          <dmn:text>"Rainy day. Take an umbrella."</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_6DCEEF58-7A0E-42B5-AA8D-DCEC44631C7D" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_2A9DBBF2-A44F-45F9-9CAB-A753124AE288">
+            <kie:width>979</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_955B318E-769F-4C1C-B4D5-72DCD547B20A">
+            <kie:width>50</kie:width>
+            <kie:width>168</kie:width>
+            <kie:width>184</kie:width>
+            <kie:width>146</kie:width>
+            <kie:width>347</kie:width>
+            <kie:width>170</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_639EBF67-BD58-4D92-99A7-F2D52BA73E5A" dmnElementRef="_639EBF67-BD58-4D92-99A7-F2D52BA73E5A" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="354" y="310" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_E2CD3347-C869-45C3-94C6-E31AEE538133" dmnElementRef="_E2CD3347-C869-45C3-94C6-E31AEE538133" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="279" y="54" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_87CB9F86-8205-48E5-A578-AD0CF21BDDF0" dmnElementRef="_87CB9F86-8205-48E5-A578-AD0CF21BDDF0" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="153" y="346.3157894736842" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_820B2767-C806-4EBB-9DE3-047D8035221C" dmnElementRef="_820B2767-C806-4EBB-9DE3-047D8035221C" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="147" y="217.31578947368422" width="114" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-drg-_66AC1350-178F-4B7C-BCAB-3975EDA3435D-AUTO-SOURCE-AUTO-TARGET" dmnElementRef="_66AC1350-178F-4B7C-BCAB-3975EDA3435D">
+        <di:waypoint x="404" y="310"/>
+        <di:waypoint x="329" y="104"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_1BEA8841-4216-40DA-A6D4-35BB6645D32E" dmnElementRef="_1BEA8841-4216-40DA-A6D4-35BB6645D32E">
+        <di:waypoint x="204" y="242.31578947368422"/>
+        <di:waypoint x="279" y="79"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_49F2A469-DC12-4B37-B1E6-0BC16A67F978-AUTO-SOURCE-AUTO-TARGET" dmnElementRef="_49F2A469-DC12-4B37-B1E6-0BC16A67F978">
+        <di:waypoint x="203" y="346.3157894736842"/>
+        <di:waypoint x="204" y="267.3157894736842"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+    <dmndi:DMNDiagram id="_98B99FF4-FBB8-45C3-8E81-54F7B91D6B08" name="new-diagram">
+      <di:extension>
+        <kie:ComponentsWidthsExtension/>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-new-diagram-_639EBF67-BD58-4D92-99A7-F2D52BA73E5A" dmnElementRef="_639EBF67-BD58-4D92-99A7-F2D52BA73E5A" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="354" y="310" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
